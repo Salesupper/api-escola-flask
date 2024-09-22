@@ -20,15 +20,15 @@ def get_prof(prof_id):
 @app.route('/prof', methods=['POST'])
 def create_prof():
     prof = request.json
-    professor = {
+    data = {
         'id': len(professores) + 1,
         'nome': prof['nome'],
         'idade': prof['idade'],
         'materia': prof['materia'],
         'observacoes': prof['observacoes']
     }
-    professores.append(professor)
-    return jsonify(professor), 201
+    professores.append(data)
+    return jsonify(data), 201
 
 
 @app.route('/prof/<int:prof_id>', methods=['PUT'])
