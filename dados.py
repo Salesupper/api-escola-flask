@@ -9,6 +9,6 @@ turmas = [
 ]
 
 alunos = [
-    {"id":1,"nome":"Mauricio","idade":16,"turma":2,"nascimento":"03/09/2011","nota_b1":7,"nota_b2":8,"media":0},
-    {"id":2,"nome":"Larissa","idade":15,"turma":1,"nascimento":"03/09/2010","nota_b1":5,"nota_b2":10,"media":0}
+    {"id":1,"nome":"Mauricio","idade":16,"turma":2,"nascimento":"03/09/2011","nota_b1":10,"nota_b2":7.5,"media":None},
+    {"id":2,"nome":"Larissa","idade":15,"turma":1,"nascimento":"03/09/2010","nota_b1":5,"nota_b2":10,"media":None}
 ]
