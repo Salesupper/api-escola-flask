@@ -38,7 +38,7 @@ def update_turma(turma_id):
             data = request.json
             turma['descricao'] = data.get('descricao', turma['descricao']),
             turma['professor'] = data.get('professor', turma['professor']),
-            turma['ativo'] = data.get('professor', turma['professor'])
+            turma['ativo'] = data.get('ativo', turma['ativo'])
             return jsonify(turma)
     return jsonify({'mensagem':'turma não encontrada'}), 404
 
