@@ -5,14 +5,6 @@ class TurmaNaoEncontrada(Exception):
     pass
 
 
-def turma_exists(turma_id):
-    for turma in turmas:
-        if turma['id'] == turma_id:
-            return True
-        else:
-            return False
-
-
 def get_turmas():
     return turmas
 
@@ -49,7 +41,6 @@ def delete_turma(turma_id):
         if turma['id'] == turma_id:
             turmas.remove(turma)
             return {'mensagem':'turma removida'}
-    else:
-        raise TurmaNaoEncontrada    
+    raise TurmaNaoEncontrada    
 
 
