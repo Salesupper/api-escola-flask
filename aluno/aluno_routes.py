@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-import aluno.aluno_model as amd
+from aluno.aluno_model import AlunoNaoEncontrado, get_aluno, get_alunos, create_aluno, update_aluno, delete_aluno
 
 
 aluno_blueprint = Blueprint('aluno',__name__)
@@ -7,36 +7,37 @@ aluno_blueprint = Blueprint('aluno',__name__)
 
 @aluno_blueprint.route('/aluno', methods=['GET'])
 def alunos():
-    return amd.get_alunos()
+    return get_alunos()
 
 
 @aluno_blueprint.route('/aluno/<int:aluno_id>', methods=['GET'])
 def aluno_id(aluno_id):
     try:
-        return amd.get_aluno(aluno_id)
-    except amd.AlunoNaoEncontrado:
+        return get_aluno(aluno_id)
+    except AlunoNaoEncontrado:
         return jsonify({'mensagem':'aluno não encontrado'}), 404
 
 
 @aluno_blueprint.route('/aluno', methods=['POST'])
 def criar_aluno():
-    amd.aluno = request.json
-    amd.create_aluno()
-    return amd.get_alunos(), 201
+    data = request.json
+    create_aluno(data)
+    return get_alunos(), 201
 
 
 @aluno_blueprint.route('/aluno/<int:aluno_id>', methods=['PUT'])
 def mudar_aluno(aluno_id):
+    data = request.json
     try:
-        amd.data = request.json
-        return amd.update_aluno(aluno_id)
-    except amd.AlunoNaoEncontrado:
+        update_aluno(aluno_id, data)
+        return get_aluno(aluno_id), 200
+    except AlunoNaoEncontrado:
         return jsonify({'mensagem':"aluno não encontrado"}), 404
 
 
 @aluno_blueprint.route('/aluno/<int:aluno_id>', methods=['DELETE'])
 def excluir_aluno(aluno_id):
     try:
-        return amd.delete_aluno(aluno_id)
-    except amd.AlunoNaoEncontrado:
+        return delete_aluno(aluno_id)
+    except AlunoNaoEncontrado:
         return jsonify({'mensagem':'aluno não encontrado'}), 404
