@@ -16,34 +16,34 @@ def get_prof(prof_id):
     raise ProfNaoEncontrado
 
 
-def create_prof():
-    data = {
+def create_prof(data):
+    prof = {
         'id': len(professores) + 1,
-        'nome': prof['nome'],
-        'idade': prof['idade'],
-        'materia': prof['materia'],
-        'observacoes': prof['observacoes']
+        'nome': data['nome'],
+        'idade': data['idade'],
+        'materia': data['materia'],
+        'observacoes': data['observacoes']
     }
-    professores.append(data)
+    professores.append(prof)
 
 
-def update_prof(prof_id):
-    for prof in professores:
-        if prof['id'] == prof_id:
-            prof['nome'] = data.get('nome', prof['nome']),
-            prof['idade'] = data.get('idade', prof['idade']),
-            prof['materia'] = data.get('materia', prof['materia']),
-            prof['observacoes'] = data.get('observacoes', prof['observacoes'])
-            return prof
-    raise ProfNaoEncontrado
+def update_prof(prof_id, data):
+    prof = get_prof(prof_id)
+    p = {
+        'id': prof_id,
+        'nome': data['nome'],
+        'idade': data['idade'],
+        'materia': data['materia'],
+        'observacoes': data['observacoes']
+    }
+    prof.update(p)
 
 
 def delete_prof(prof_id):
-    for prof in professores:
-        if prof['id'] == prof_id:
-            professores.remove(prof)
-            return {'mensagem':'professor removido'}
-    raise ProfNaoEncontrado
+    prof = get_prof(prof_id)
+    professores.remove(prof)
+    return {'mensagem':'professor removido'}
+
 
 
 
