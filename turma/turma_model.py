@@ -1,4 +1,24 @@
-from dados import turmas
+from config import db
+
+
+class Turma(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    descricao = db.Column(db.String(5))
+    professor = db.Column(db.Integer, nullable=False)
+    ativo = db.Column(db.Boolean, default=True)
+
+    def __init__(self, descricao, professor, ativo):
+        self.descricao = descricao,
+        self.professor = professor,
+        self.ativo = ativo
+
+    def to_dict(self):
+        return {
+            'id': self.id, 
+            'descricao': self.descricao, 
+            'professor': self.professor,
+            'ativo':self.ativo
+        }
 
 
 class TurmaNaoEncontrada(Exception):
@@ -6,41 +26,46 @@ class TurmaNaoEncontrada(Exception):
 
 
 def get_turmas():
-    return turmas
+    turmas = Turma.query.all()
+    return [turma.to_dict() for turma in turmas]
 
 
 def get_turma(turma_id):
-    for turma in turmas:
-        if turma['id'] == turma_id:
-            return turma
-    raise TurmaNaoEncontrada
+    turma = Turma.query.get(turma_id)
+    if not turma:
+        raise TurmaNaoEncontrada
+    return turma.to_dict()
 
 
 def create_turma(data):
-    turma = {
-        'id': len(turmas) + 1,
-        'descricao': data['descricao'],
-        'professor': data['professor'],
-        'ativo': data['ativo']
-    }
-    turmas.append(turma)
+    turma = Turma(
+        descricao = data['descricao'],
+        professor = data['professor'],
+        ativo = data['ativo']
+    )
+    db.session.add(data)
+    db.session.commit()
 
 
 def update_turma(turma_id, data):
-    turma = get_turma(turma_id)
-    t = {
-        'id': turma_id,
-        'descricao': data['descricao'],
-        'professor': data['professor'],
-        'ativo': data['ativo']
-    }
-    turma.update(t)
+    turma = Turma.query.get(turma_id)
+    if not turma:
+        raise TurmaNaoEncontrada
+    
+    turma.descricao = data['descricao'],
+    turma.professor = data['professor'],
+    turma.ativo = data['ativo']
+    
+    db.session.commit()
 
 
 def delete_turma(turma_id):
-    turma = get_turma(turma_id)
-    turmas.remove(turma)
-    return {'mensagem':'turma removida'}
+    turma = Turma.query.get(turma_id)
+    if not turma:
+        raise TurmaNaoEncontrada
+    
+    db.session.delete(turma)
+    db.session.commit()
     
 
 

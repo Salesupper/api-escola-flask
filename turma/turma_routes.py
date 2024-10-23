@@ -7,13 +7,14 @@ turma_blueprint = Blueprint('turma', __name__)
 
 @turma_blueprint.route('/turma', methods=['GET'])
 def turmas():
-    return get_turmas()
+    return jsonify(get_turmas())
    
    
 @turma_blueprint.route('/turma/<int:turma_id>', methods=['GET'])
 def turma_id(turma_id):
     try:
-        return get_turma(turma_id)
+        turma = get_turma(turma_id)
+        return jsonify(turma)
     except TurmaNaoEncontrada:
         return jsonify({'mensagem':'turma não encontrada'}), 404
 
@@ -22,7 +23,7 @@ def turma_id(turma_id):
 def criar_turma():
     data = request.json
     create_turma(data)
-    return get_turmas(), 201
+    return jsonify(data), 201
 
 
 @turma_blueprint.route('/turma/<int:turma_id>', methods=['PUT'])
@@ -30,7 +31,7 @@ def mudar_turma(turma_id):
     data = request.json
     try:
         update_turma(turma_id, data)
-        return get_turma(turma_id)
+        return jsonify(get_turma(turma_id))
     except TurmaNaoEncontrada:
         return jsonify({'mensagem':'turma não encontrada'}), 404
 
