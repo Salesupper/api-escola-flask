@@ -3,13 +3,13 @@ from config import db
 
 class Turma(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    descricao = db.Column(db.String(5))
+    descricao = db.Column(db.String(5), nullable=False)
     professor = db.Column(db.Integer, nullable=False)
     ativo = db.Column(db.Boolean, default=True)
 
     def __init__(self, descricao, professor, ativo):
-        self.descricao = descricao,
-        self.professor = professor,
+        self.descricao = descricao
+        self.professor = professor
         self.ativo = ativo
 
     def to_dict(self):
@@ -17,7 +17,7 @@ class Turma(db.Model):
             'id': self.id, 
             'descricao': self.descricao, 
             'professor': self.professor,
-            'ativo':self.ativo
+            'ativo': self.ativo
         }
 
 
@@ -38,12 +38,12 @@ def get_turma(turma_id):
 
 
 def create_turma(data):
-    turma = Turma(
+    nova_turma = Turma(
         descricao = data['descricao'],
         professor = data['professor'],
         ativo = data['ativo']
     )
-    db.session.add(data)
+    db.session.add(nova_turma)
     db.session.commit()
 
 
@@ -51,11 +51,9 @@ def update_turma(turma_id, data):
     turma = Turma.query.get(turma_id)
     if not turma:
         raise TurmaNaoEncontrada
-    
-    turma.descricao = data['descricao'],
-    turma.professor = data['professor'],
+    turma.descricao = data['descricao']
+    turma.professor = data['professor']
     turma.ativo = data['ativo']
-    
     db.session.commit()
 
 
@@ -63,7 +61,6 @@ def delete_turma(turma_id):
     turma = Turma.query.get(turma_id)
     if not turma:
         raise TurmaNaoEncontrada
-    
     db.session.delete(turma)
     db.session.commit()
     

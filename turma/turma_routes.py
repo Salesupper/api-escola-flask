@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from turma.turma_model import TurmaNaoEncontrada, get_turmas, get_turma, create_turma, update_turma, delete_turma
+from .turma_model import TurmaNaoEncontrada, get_turmas, get_turma, create_turma, update_turma, delete_turma
 
 
 turma_blueprint = Blueprint('turma', __name__) 
@@ -39,6 +39,7 @@ def mudar_turma(turma_id):
 @turma_blueprint.route('/turma/<int:turma_id>', methods=['DELETE'])
 def excluir_turma(turma_id):
     try:
-        return delete_turma(turma_id)
+        delete_turma(turma_id)
+        return jsonify({'mensagem':'turma excluida'}), 204
     except TurmaNaoEncontrada:
         return jsonify({'mensagem':'turma não encontrada'}), 404
